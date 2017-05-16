@@ -33,8 +33,8 @@ public class OfferDAO {
                 new MapSqlParameterSource();
         parameterSource.addValue("name","Sue");
 
-        return namedParameterJdbcTemplate.query("select * from offers where name = :name",
-                parameterSource,
+        return namedParameterJdbcTemplate.query("select * from offers",
+                //parameterSource,
                 new RowMapper<Offer>() {
             @Override
             public Offer mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -67,5 +67,12 @@ public class OfferDAO {
                         return offer;
                     }
                 });
+    }
+
+    public boolean delete(int id){
+
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("id",id);
+        return namedParameterJdbcTemplate.update("delete from offers where id = :id",parameterSource) == 1;
     }
 }

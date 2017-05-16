@@ -21,8 +21,11 @@ public class App {
             for(Offer offer : offerDAO.getOffers()){
                 System.out.println(offer);
             }
-
             System.out.println(offerDAO.getOffer(2));
+            System.out.println(offerDAO.delete(2));
+            for(Offer offer : offerDAO.getOffers()){
+                System.out.println(offer);
+            }
         }catch (CannotGetJdbcConnectionException e){ //happens due to unauthorized password
             System.out.println(e.getMessage());
             System.out.println(e.getClass());
