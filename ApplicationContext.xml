@@ -17,8 +17,17 @@
     </bean>-->
 
     <context:annotation-config></context:annotation-config>
+    <!--suppress SpringModelInspection -->
     <context:component-scan base-package="com.papillon.dc"></context:component-scan>
     <context:property-placeholder location="sdbc.properties" ></context:property-placeholder>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="${sdbc.driver}"></property>
+        <property name="url" value="${sdbc.url}"></property>
+        <property name="username" value="${sdbc.user}"></property>
+        <property name="password" value="${sdbc.password}"></property>
+
+    </bean>
 
 
 

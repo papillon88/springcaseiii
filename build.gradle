@@ -13,5 +13,9 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-core', version: '4.3.8.RELEASE'
     compile group: 'org.springframework', name: 'spring-context', version: '4.3.8.RELEASE'
     compile group: 'org.springframework', name: 'spring-beans', version: '4.3.8.RELEASE'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
+    compile group: 'commons-dbcp', name: 'commons-dbcp', version: '1.4'
+
+
 
 }
