@@ -1,0 +1,17 @@
+apply plugin: 'java'
+
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+    mavenCentral()
+}
+
+
+dependencies {
+
+    compile group: 'org.springframework', name: 'spring-core', version: '4.3.8.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context', version: '4.3.8.RELEASE'
+    compile group: 'org.springframework', name: 'spring-beans', version: '4.3.8.RELEASE'
+
+}
