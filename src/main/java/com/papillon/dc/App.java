@@ -2,6 +2,8 @@ package com.papillon.dc;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
+import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.CannotGetJdbcConnectionException;
 
 /**
  * Created by papillon on 5/15/2017.
@@ -14,10 +16,18 @@ public class App {
 
         /*Robot robot = (Robot)context.getBean("robot");
         robot.speak();*/
-
-        OfferDAO offerDAO = (OfferDAO)context.getBean("OfferDAO");
-        for(Offer offer : offerDAO.getOffers()){
-            System.out.println(offer);
+        try {
+            OfferDAO offerDAO = (OfferDAO)context.getBean("OfferDAO");
+            for(Offer offer : offerDAO.getOffers()){
+                System.out.println(offer);
+            }
+        }catch (CannotGetJdbcConnectionException e){
+            System.out.println(e.getMessage());
+            System.out.println(e.getClass());
+        }catch (DataAccessException e){
+            System.out.println(e.getMessage());
+            System.out.println(e.getClass());
         }
+
     }
 }

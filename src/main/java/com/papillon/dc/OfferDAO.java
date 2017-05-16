@@ -1,6 +1,7 @@
 package com.papillon.dc;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ public class OfferDAO {
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
+    @Qualifier(value = "data_source")
     public void setJdbcTemplate(javax.sql.DataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
