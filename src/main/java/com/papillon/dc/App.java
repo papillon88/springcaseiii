@@ -21,10 +21,12 @@ public class App {
             for(Offer offer : offerDAO.getOffers()){
                 System.out.println(offer);
             }
-        }catch (CannotGetJdbcConnectionException e){
+
+            System.out.println(offerDAO.getOffer(2));
+        }catch (CannotGetJdbcConnectionException e){ //happens due to unauthorized password
             System.out.println(e.getMessage());
             System.out.println(e.getClass());
-        }catch (DataAccessException e){
+        }catch (DataAccessException e){ //happens due to wrong sql grammar
             System.out.println(e.getMessage());
             System.out.println(e.getClass());
         }

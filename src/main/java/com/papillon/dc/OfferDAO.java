@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.activation.DataSource;
@@ -17,16 +19,23 @@ import java.util.List;
 @Component("OfferDAO")
 public class OfferDAO {
 
-    private JdbcTemplate jdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
     @Qualifier(value = "data_source")
     public void setJdbcTemplate(javax.sql.DataSource dataSource) {
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
     public List<Offer> getOffers(){
-        return jdbcTemplate.query("select * from offers", new RowMapper<Offer>() {
+
+        MapSqlParameterSource parameterSource =
+                new MapSqlParameterSource();
+        parameterSource.addValue("name","Sue");
+
+        return namedParameterJdbcTemplate.query("select * from offers where name = :name",
+                parameterSource,
+                new RowMapper<Offer>() {
             @Override
             public Offer mapRow(ResultSet rs, int rowNum) throws SQLException {
                 Offer offer = new Offer();
@@ -37,5 +46,26 @@ public class OfferDAO {
                 return offer;
             }
         });
+    }
+
+    public Offer getOffer(int id){
+
+        MapSqlParameterSource parameterSource =
+                new MapSqlParameterSource();
+        parameterSource.addValue("id", id);
+
+        return namedParameterJdbcTemplate.queryForObject("select * from offers where id = :id",
+                parameterSource,
+                new RowMapper<Offer>() {
+                    @Override
+                    public Offer mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        Offer offer = new Offer();
+                        offer.setId(rs.getInt("id"));
+                        offer.setName(rs.getString("name"));
+                        offer.setText(rs.getString("text"));
+                        offer.setEmail(rs.getString("email"));
+                        return offer;
+                    }
+                });
     }
 }
