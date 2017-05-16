@@ -2,13 +2,10 @@ package com.papillon.dc;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.*;
 import org.springframework.stereotype.Component;
 
-import javax.activation.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -27,6 +24,24 @@ public class OfferDAO {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
     }
 
+
+    /*****************************************************
+     **********CRUD OPERATIONS****************************
+     *****************************************************/
+
+    public boolean create(Offer offer){
+        BeanPropertySqlParameterSource beanPropertySqlParameterSource =
+                new BeanPropertySqlParameterSource(offer);
+        return namedParameterJdbcTemplate.update("insert into offers(name,text,email) values (:name,:text,:email)",
+                beanPropertySqlParameterSource) == 1;
+    }
+
+    public int[] create(List<Offer> offers){
+        SqlParameterSource[] source = SqlParameterSourceUtils.createBatch(offers.toArray());
+        return namedParameterJdbcTemplate.batchUpdate("insert into offers(name,text,email) values (:name,:text,:email)",
+                source);
+    }
+
     public List<Offer> getOffers(){
 
         MapSqlParameterSource parameterSource =
@@ -36,16 +51,16 @@ public class OfferDAO {
         return namedParameterJdbcTemplate.query("select * from offers",
                 //parameterSource,
                 new RowMapper<Offer>() {
-            @Override
-            public Offer mapRow(ResultSet rs, int rowNum) throws SQLException {
-                Offer offer = new Offer();
-                offer.setId(rs.getInt("id"));
-                offer.setName(rs.getString("name"));
-                offer.setText(rs.getString("text"));
-                offer.setEmail(rs.getString("email"));
-                return offer;
-            }
-        });
+                    @Override
+                    public Offer mapRow(ResultSet rs, int rowNum) throws SQLException {
+                        Offer offer = new Offer();
+                        offer.setId(rs.getInt("id"));
+                        offer.setName(rs.getString("name"));
+                        offer.setText(rs.getString("text"));
+                        offer.setEmail(rs.getString("email"));
+                        return offer;
+                    }
+                });
     }
 
     public Offer getOffer(int id){
@@ -69,10 +84,19 @@ public class OfferDAO {
                 });
     }
 
-    public boolean delete(int id){
+    public boolean update(int id,String newName){
+        MapSqlParameterSource parameterSource = new MapSqlParameterSource();
+        parameterSource.addValue("id",id);
+        parameterSource.addValue("newname",newName);
+        return namedParameterJdbcTemplate.update("update offers set name = :newname where id = :id",parameterSource) == 1;
+    }
 
+    public boolean delete(int id){
         MapSqlParameterSource parameterSource = new MapSqlParameterSource();
         parameterSource.addValue("id",id);
         return namedParameterJdbcTemplate.update("delete from offers where id = :id",parameterSource) == 1;
     }
+
+
+
 }
