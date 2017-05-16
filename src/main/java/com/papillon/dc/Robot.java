@@ -18,7 +18,10 @@ public class Robot {
     }
 
     @Autowired
-    public void setId(@Value("#{random.getText()?.length()}") int id){
+    /*public void setId(@Value("#{random.getText()?.length()}") int id){
+        this.id = id;
+    }*/
+    public void setId(@Value("${sdbc.password}") int id){
         this.id = id;
     }
 
@@ -26,7 +29,11 @@ public class Robot {
     //expressions within #{}
     //new java.util.Date().toString()
     //NOT Math.PI BUT T(Math).PI ---> for static methods,prefix with 'T'
-    public void setSpeech(@Value("#{T(Math).PI}") String speech){
+    /*public void setSpeech(@Value("#{T(Math).PI}") String speech){
+        this.speech = speech;
+    }*/
+    public void setSpeech(@Value("Hello ${sdbc.user}") String speech){
         this.speech = speech;
     }
+
 }
