@@ -12,7 +12,12 @@ public class App {
         ApplicationContext context =
                 new FileSystemXmlApplicationContext("ApplicationContext.xml");
 
-        Robot robot = (Robot)context.getBean("robot");
-        robot.speak();
+        /*Robot robot = (Robot)context.getBean("robot");
+        robot.speak();*/
+
+        OfferDAO offerDAO = (OfferDAO)context.getBean("OfferDAO");
+        for(Offer offer : offerDAO.getOffers()){
+            System.out.println(offer);
+        }
     }
 }
