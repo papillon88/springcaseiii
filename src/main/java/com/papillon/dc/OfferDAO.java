@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.*;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -36,9 +37,10 @@ public class OfferDAO {
                 beanPropertySqlParameterSource) == 1;
     }
 
+    @Transactional
     public int[] create(List<Offer> offers){
         SqlParameterSource[] source = SqlParameterSourceUtils.createBatch(offers.toArray());
-        return namedParameterJdbcTemplate.batchUpdate("insert into offers(name,text,email) values (:name,:text,:email)",
+        return namedParameterJdbcTemplate.batchUpdate("insert into offers(id,name,text,email) values (:id,:name,:text,:email)",
                 source);
     }
 

@@ -37,7 +37,7 @@ public class App {
             }
             List<Offer> offers = new ArrayList<>();
             offers.add(new Offer("khushi","khushi@gmail.com","dummy3"));
-            offers.add(new Offer("momo","momo@gmail.com","dummy4"));
+            offers.add(new Offer(1,"momo","momo@gmail.com","dummy4"));
             offers.add(new Offer("english","english@gmail.com","dummy5"));
             offerDAO.create(offers);
             for(Offer offer : offerDAO.getOffers()){
